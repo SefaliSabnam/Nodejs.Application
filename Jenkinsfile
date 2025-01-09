@@ -7,19 +7,19 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Installing dependencies in ${APP_ENV}"
-                sh 'npm install'
+                sh 'npm install || { echo "Build failed"; exit 1; }'
             }
         }
         stage('Test') {
             steps {
                 echo "Running tests in ${APP_ENV}"
-                sh 'npm test'
+                sh 'npm run test || { echo "Tests failed"; exit 1; }'
             }
         }
         stage('Deploy') {
             steps {
                 echo "Deploying Node.js app to ${APP_ENV} server"
-                sh 'scp server.js user@server:/var/www/${APP_ENV}/'
+                sh 'scp -o StrictHostKeyChecking=no server.js user@server:/var/www/${APP_ENV}/ || { echo "Deployment failed"; exit 1; }'
             }
         }
     }
