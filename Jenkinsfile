@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        APP_ENV = "${BRANCH_NAME}"
+        APP_ENV = "${Deploy}"
     }
     stages {
         stage('Build') {
